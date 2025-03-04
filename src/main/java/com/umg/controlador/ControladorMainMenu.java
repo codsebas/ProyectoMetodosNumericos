@@ -27,7 +27,6 @@ public class ControladorMainMenu implements ActionListener{
             metodo.setLocationRelativeTo(null);
             metodo.setVisible(true);
         } else{
-            
         }
     }
 }
