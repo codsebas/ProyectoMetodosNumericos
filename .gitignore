@@ -1,0 +1,19 @@
+# Ignorar archivos y carpetas generadas por Maven
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Archivos de configuración de IDEs
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+
+# Archivos de logs y sistema
+logs/
+*.log
+.DS_Store
+Thumbs.db
