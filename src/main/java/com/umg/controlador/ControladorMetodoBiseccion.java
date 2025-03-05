@@ -3,8 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.umg.controlador;
+
 import com.umg.modelo.ModeloMetodoBiseccion;
-import com.umg.operaciones.*;
+import com.umg.operaciones.MetodoBiseccion;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -15,8 +16,10 @@ import javax.swing.JOptionPane;
  *
  * @author sebas
  */
-public class ControladorMetodoBiseccion implements ActionListener, WindowListener{
+public class ControladorMetodoBiseccion implements ActionListener, WindowListener {
+
     ModeloMetodoBiseccion modelo;
+    MetodoBiseccion metodo = new MetodoBiseccion();
 
     public ControladorMetodoBiseccion(ModeloMetodoBiseccion modelo) {
         this.modelo = modelo;
@@ -24,19 +27,33 @@ public class ControladorMetodoBiseccion implements ActionListener, WindowListene
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getActionCommand().equals(modelo.getVista().btnCalcular.getActionCommand())){
-            if(modelo.getVista().txtFuncion.getText().isEmpty()){
-                JOptionPane.showMessageDialog(null, "Campo de función no puede estar vacío", "Campo requerido", JOptionPane.WARNING_MESSAGE);
+        if (e.getActionCommand().equals(modelo.getVista().btnCalcular.getActionCommand())) {
+            if (modelo.getVista().txtFuncion.getText().isEmpty()
+                    || modelo.getVista().txtIntervalo.getText().isEmpty()
+                    || modelo.getVista().txtTolerancia.getText().isEmpty()) {
+
+                JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios", "Error", JOptionPane.WARNING_MESSAGE);
             } else {
-                InterpreteFunciones interprete = new InterpreteFunciones();
+                try {
+                    String funcion = modelo.getVista().txtFuncion.getText();
+                    String[] intervalo = modelo.getVista().txtIntervalo.getText().split(",");
+                    double a = Double.parseDouble(intervalo[0]);
+                    double b = Double.parseDouble(intervalo[1]);
+                    double tolerancia = Double.parseDouble(modelo.getVista().txtTolerancia.getText());
+
+                    modelo.getVista().tblBiseccion.setModel(metodo.calcularBiseccion(funcion, a, b, tolerancia));
+
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Entrada no válida", "Error", JOptionPane.ERROR_MESSAGE);
+                    //System.out.println(ex.getMessage());
+                }
             }
-        } else {
-            
         }
     }
 
     @Override
     public void windowOpened(WindowEvent e) {
+        this.modelo.getVista().txtTolerancia.setText("0.001");
     }
 
     @Override
@@ -62,6 +79,5 @@ public class ControladorMetodoBiseccion implements ActionListener, WindowListene
     @Override
     public void windowDeactivated(WindowEvent e) {
     }
-    
-    
+
 }
