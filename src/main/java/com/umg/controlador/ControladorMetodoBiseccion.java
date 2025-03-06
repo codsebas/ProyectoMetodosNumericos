@@ -45,7 +45,6 @@ public class ControladorMetodoBiseccion implements ActionListener, WindowListene
 
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Entrada no válida", "Error", JOptionPane.ERROR_MESSAGE);
-                    //System.out.println(ex.getMessage());
                 }
             }
         }
