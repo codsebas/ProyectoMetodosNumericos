@@ -11,35 +11,30 @@ import javax.swing.table.DefaultTableModel;
  * @author sebas
  */
 public class MetodoBiseccion {
-    
-   private FuncionParser parser;
-
-    public MetodoBiseccion() {
-        this.parser = new FuncionParser();
-    }
 
     public DefaultTableModel calcularBiseccion(String funcion, double a, double b, double tolerancia) {
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.setColumnIdentifiers(new Object[]{"Iteración", "a", "b", "f(a)", "f(b)", "Xr", "f(Xr)", "Tolerancia"});
 
-        int iteracion = 0;
+        int iteracion = 1;
         double xr, fa, fb, fxr, error = Double.MAX_VALUE;
-
+        String errorStr;
         do {
             xr = (a + b) / 2;
-            fa = parser.evaluar(funcion, a);
-            fb = parser.evaluar(funcion, b);
-            fxr = parser.evaluar(funcion, xr);
-
-            modelo.addRow(new Object[]{iteracion, a, b, fa, fb, xr, fxr, error});
-
+            fa = Math.round(Interprete.evaluate(funcion, a) * 10000.0) / 10000.0;
+            fb = Math.round(Interprete.evaluate(funcion, b) * 10000.0) / 10000.0;
+            fxr = Math.round(Interprete.evaluate(funcion, xr) * 10000.0) / 10000.0;
+            
+            errorStr = (iteracion == 1) ? "----------" : String.valueOf(error);
+            modelo.addRow(new Object[]{iteracion, a, b, fa, fb, xr, fxr, errorStr});
+            
             if (fa * fxr < 0) {
-                b = xr;
+                b = Math.round(xr * 10000.0) / 10000.0;
             } else {
-                a = xr;
+                a = Math.round(xr * 10000.0) / 10000.0;
             }
-
-            error = Math.abs(b - a);
+            
+            error = Math.round(Math.abs(b - a) * 10000.0) / 10000.0;
             iteracion++;
 
         } while (error > tolerancia);
