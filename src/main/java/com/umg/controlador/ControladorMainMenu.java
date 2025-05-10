@@ -26,7 +26,16 @@ public class ControladorMainMenu implements ActionListener{
             VistaMetodoBiseccion metodo = new VistaMetodoBiseccion();
             metodo.setLocationRelativeTo(null);
             metodo.setVisible(true);
-        } else{
+        } else if(e.getActionCommand().equals(modelo.getVista().btnNewton.getActionCommand())){
+            modelo.getVista().setVisible(false);
+            VistaMetodoNewton metodo = new VistaMetodoNewton();
+            metodo.setLocationRelativeTo(null);
+            metodo.setVisible(true);
+        } else if(e.getActionCommand().equals(modelo.getVista().btnMuller.getActionCommand())){
+            modelo.getVista().setVisible(false);
+            VistaMetodoMuller metodo = new VistaMetodoMuller();
+            metodo.setLocationRelativeTo(null);
+            metodo.setVisible(true);
         }
     }
 }

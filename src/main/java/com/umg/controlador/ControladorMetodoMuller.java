@@ -1,54 +1,51 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.umg.controlador;
 
-import com.umg.modelo.ModeloMetodoBiseccion;
-import com.umg.operaciones.MetodoBiseccion;
+import com.umg.modelo.ModeloMetodoMuller;
+import com.umg.operaciones.MetodoMuller;
+import com.umg.operaciones.MetodoNewton;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import javax.swing.JOptionPane;
 
-/**
- *
- *
- * @author sebas
- */
-public class ControladorMetodoBiseccion implements ActionListener, WindowListener {
 
-    ModeloMetodoBiseccion modelo;
-    MetodoBiseccion metodo = new MetodoBiseccion();
+public class ControladorMetodoMuller implements ActionListener, WindowListener {
 
-    public ControladorMetodoBiseccion(ModeloMetodoBiseccion modelo) {
+    ModeloMetodoMuller modelo;
+    MetodoMuller metodo;
+
+    public ControladorMetodoMuller(ModeloMetodoMuller modelo) {
         this.modelo = modelo;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals(modelo.getVista().btnCalcular.getActionCommand())) {
+        if(e.getActionCommand().equals(modelo.getVista().btnCalcular.getActionCommand())){
             if (modelo.getVista().txtFuncion.getText().isEmpty()
-                    || modelo.getVista().txtIntervalo.getText().isEmpty()
+                    || modelo.getVista().txtX0.getText().isEmpty()
+                    || modelo.getVista().txtX1.getText().isEmpty()
+                    || modelo.getVista().txtX2.getText().isEmpty()
                     || modelo.getVista().txtTolerancia.getText().isEmpty()) {
 
                 JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios", "Error", JOptionPane.WARNING_MESSAGE);
             } else {
-                try {   
+                try {
                     String funcion = modelo.getVista().txtFuncion.getText();
-                    String[] intervalo = modelo.getVista().txtIntervalo.getText().split(",");
-                    double a = Double.parseDouble(intervalo[0]);
-                    double b = Double.parseDouble(intervalo[1]);
+                    double x0 = Double.parseDouble(modelo.getVista().txtX0.getText());
+                    double x1 = Double.parseDouble(modelo.getVista().txtX1.getText());
+                    double x2 = Double.parseDouble(modelo.getVista().txtX2.getText());
                     double tolerancia = Double.parseDouble(modelo.getVista().txtTolerancia.getText());
 
-                    modelo.getVista().tblBiseccion.setModel(metodo.calcularBiseccion(funcion, a, b, tolerancia));
+                    //modelo.getVista().tblBiseccion.setModel(metodo.calcularBiseccion(funcion, a, b, tolerancia));
 
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Entrada no válida", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
+
     }
 
     @Override
@@ -58,26 +55,31 @@ public class ControladorMetodoBiseccion implements ActionListener, WindowListene
 
     @Override
     public void windowClosing(WindowEvent e) {
+
     }
 
     @Override
     public void windowClosed(WindowEvent e) {
+
     }
 
     @Override
     public void windowIconified(WindowEvent e) {
+
     }
 
     @Override
     public void windowDeiconified(WindowEvent e) {
+
     }
 
     @Override
     public void windowActivated(WindowEvent e) {
+
     }
 
     @Override
     public void windowDeactivated(WindowEvent e) {
-    }
 
+    }
 }
