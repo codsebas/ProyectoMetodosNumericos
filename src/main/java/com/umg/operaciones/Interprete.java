@@ -5,13 +5,17 @@
 package com.umg.operaciones;
 
 import java.util.*;
+import org.nfunk.jep.JEP;
+import org.lsmp.djep.djep.DJep;
+import org.nfunk.jep.Node;
+import org.nfunk.jep.ParseException;
 
 /**
  *
  * @author sebas
  */
 public class Interprete {
-    public static double evaluate(String expression, double x) {
+    public static double evaluatec(String expression, double x) {
         expression = expression.replace("pi", String.valueOf(Math.PI)).replace("e", String.valueOf(Math.E));
         String[] tokens = expression.split(" ");
         Stack<Double> values = new Stack<>();
@@ -70,5 +74,50 @@ public class Interprete {
             case '/': return a / b;
             default: throw new UnsupportedOperationException("Operador no soportado: " + op);
         }
+    }
+
+    public static double evaluate(String expression, double x) {
+        double respuesta = 0;
+
+        try {
+            JEP jep = new JEP();
+            jep.addStandardFunctions();
+            jep.addStandardConstants();
+
+            jep.addVariable("x", x);
+            jep.parseExpression(expression);
+
+            respuesta = jep.getValue();
+
+        } catch (Exception e) {
+            System.out.println("Error" + e.getMessage());
+        }
+
+        return respuesta;
+    }
+
+    public static String evaluateDerivada(String expression) {
+        String respuesta = "";
+
+        try {
+            DJep djep = new DJep();
+            djep.addStandardFunctions();
+            djep.addStandardConstants();
+            djep.addComplex();
+            djep.setAllowUndeclared(true);
+            djep.setAllowAssignment(true);
+            djep.setImplicitMul(true);
+            djep.addStandardDiffRules();
+
+            Node nodoFuncion = djep.parse(expression);
+            Node diff = djep.differentiate(nodoFuncion, "x");
+            Node nodoDerivada = djep.simplify(diff);
+            respuesta = djep.toString(nodoDerivada);
+
+        } catch (ParseException e) {
+            System.out.println("Error" + e.getErrorInfo());
+        }
+
+        return respuesta;
     }
 }

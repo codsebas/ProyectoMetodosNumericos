@@ -17,24 +17,29 @@ public class MetodoBiseccion {
         modelo.setColumnIdentifiers(new Object[]{"Iteración", "a", "b", "f(a)", "f(b)", "Xr", "f(Xr)", "Tolerancia"});
 
         int iteracion = 1;
-        double xr, fa, fb, fxr, error = Double.MAX_VALUE;
+        double xr, fa, fb, fxr, error = Double.MAX_VALUE, xrA = 0;
         String errorStr;
         do {
-            xr = (a + b) / 2;
+
+            xr = Math.round(((a + b) / 2) * 10000.0) / 10000.0;
             fa = Math.round(Interprete.evaluate(funcion, a) * 10000.0) / 10000.0;
             fb = Math.round(Interprete.evaluate(funcion, b) * 10000.0) / 10000.0;
             fxr = Math.round(Interprete.evaluate(funcion, xr) * 10000.0) / 10000.0;
+
+            if(iteracion > 1){
+                error = Math.round(Math.abs(xrA - xr) * 10000.0) / 10000.0;
+            }
             
             errorStr = (iteracion == 1) ? "----------" : String.valueOf(error);
             modelo.addRow(new Object[]{iteracion, a, b, fa, fb, xr, fxr, errorStr});
-            
+
             if (fa * fxr < 0) {
                 b = Math.round(xr * 10000.0) / 10000.0;
             } else {
                 a = Math.round(xr * 10000.0) / 10000.0;
             }
-            
-            error = Math.round(Math.abs(b - a) * 10000.0) / 10000.0;
+
+            xrA = xr;
             iteracion++;
 
         } while (error > tolerancia);
